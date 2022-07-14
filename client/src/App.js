@@ -1,42 +1,83 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import { useQuery } from '@apollo/client'
-import { GET_ALL_USERS } from './query/users';
+import { useQuery, useMutation } from '@apollo/client'
+import { GET_ALL_USERS, GET_USER } from './query/users';
+import { CREATE_USER } from './mutation/mutation'
 
 function App() {
-  //const [data, loading, error] = useQuery(GET_ALL_USERS)
+  const { data, loading, error, refetch } = useQuery(GET_ALL_USERS)
+  const { data: getUser, loading: whileLoading } = useQuery(GET_USER, {
+    variables: { id: 1 }
+  })
+  const [newUser] = useMutation(CREATE_USER)
   const [users, setUsers] = useState([])
+  const [username, setUserName] = useState('')
+  const [age, setUserAge] = useState(0)
 
-  console.log(GET_ALL_USERS);
+  console.log('%cApp.js line:17 getUser', 'color: #007acc;', getUser);
 
-  // useEffect(() => {
+  useEffect(() => {
+    if (!loading) {
+      setUsers(data.getAllUsers)
+    }
+  }, [data])
 
-  // }, [data])
+  // add user
+  const createUser = (e) => {
+    e.preventDefault()
+
+    newUser({
+      variables: {
+        input: {
+          age, username
+        }
+      }
+    }).then(({ data }) => {
+      setUserName('')
+      setUserAge(0)
+    })
+  }
+
+  // get all users
+  const getUsers = (e) => {
+    e.preventDefault()
+    refetch();
+  }
+
+  const onSubmitForm = (e) => {
+    e.preventDefault()
+  }
+
+  if (loading) {
+    return <h1>Loading ...</h1>
+  }
 
   return (
     <div className="App">
-      <form>
-        <input type='text' />
-        <input type='number' />
+      <form onSubmit={onSubmitForm}>
+        <input type='text' value={username} onChange={(e) => setUserName(e.target.value)} placeholder='username' />
+        <input type='number' value={age} onChange={(e) => setUserAge(e.target.valueAsNumber)} placeholder='age' />
         <div className='buttons'>
-          <button>создать</button>
-          <button>получить</button>
+          <button onClick={(e) => createUser(e)}>создать</button>
+          <button onClick={(e) => getUsers(e)}>получить</button>
         </div>
       </form>
       <div className='users'>
-        {/* <table>
-          {
-            users.map(user => {
-              return (
-                <tr>
-                  <td>{user.id}</td>
-                  <td>{user.username}</td>
-                  <td>{user.age}</td>
-                </tr>
-              )
-            })
-          }
-        </table> */}
+        <table border='1'>
+          <tbody>
+            {
+              users.map(user => {
+                return (
+                  <tr key={user.id}>
+                    <td>id: <b>{user.id}</b></td>
+                    <td>name: <b>{user.username}</b></td>
+                    <td>age: <b>{user.age}</b></td>
+                  </tr>
+                )
+              })
+            }
+          </tbody>
+        </table>
       </div>
     </div>
   );
