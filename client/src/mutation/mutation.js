@@ -7,3 +7,19 @@ export const CREATE_USER = gql`
     }
   }
 `
+
+export const DELETE_USER = gql`
+  mutation deleteUser($id: ID){
+    deleteUser(id: $id){
+      id, username, age 
+    }
+  }
+`
+
+export const UPDATE_USER = gql`
+  mutation updateUser($username: String, $id: ID){
+    updateUser(username: $username, id: $id){
+      id, username, age 
+    }
+  }
+`

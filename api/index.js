@@ -5,7 +5,7 @@ const schema = require('./schema')
 const app = express();
 app.use(cors())
 
-const users = [
+let users = [
   { id: 1, username: 'Hello', age: 20 }
 ];
 
@@ -32,6 +32,18 @@ const resolver = {
     users.push(user)
     return user
   },
+
+  deleteUser: ({ id }) => {
+    users = users.filter(user => user.id != id)
+    return users;
+  },
+
+  updateUser: ({ id, username }) => {
+    users = users.map((item) => {
+      return item.id == id ? { ...item, username } : { ...item }
+    })
+    return users;
+  }
 }
 
 
