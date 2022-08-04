@@ -9,8 +9,19 @@ let users = [
   { id: 1, username: 'Hello', age: 20 }
 ];
 
+// Create User
 const createUser = (input) => {
   const id = Date.now();
+  return {
+    id, ...input
+  }
+}
+
+// Update User
+const updateUser = (id, input) => {
+  users = users.map((item) => {
+    return item.id == id ? { ...item, ...input } : { ...item }
+  })
   return {
     id, ...input
   }
@@ -38,14 +49,11 @@ const resolver = {
     return users;
   },
 
-  updateUser: ({ id, username }) => {
-    users = users.map((item) => {
-      return item.id == id ? { ...item, username } : { ...item }
-    })
+  updateUser: ({ id, input }) => {
+    users = updateUser(id, input)
     return users;
   }
 }
-
 
 app.use('/graphql', graphqlHTTP({
   graphiql: true,
