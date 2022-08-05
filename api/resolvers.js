@@ -4,9 +4,7 @@ let users = [
     { id: 2, username: 'Arlold', age: 45 },
     { id: 3, username: 'Jack', age: 24 },
     { id: 4, username: 'Mary', age: 56 },
-  ];
-  
-
+  ]; 
 
 // Create User
 const createUser = (input) => {
@@ -21,9 +19,12 @@ const updateUser = (id, input) => {
     users = users.map((item) => {
         return item.id == id ? { ...item, ...input } : { ...item }
     })
-    return {
-        id, ...input
-    }
+    const user = users.find((user) => {
+        if(user.id === +id) {
+            return user;
+        }
+    })
+    return user
 }
 
 
@@ -34,7 +35,7 @@ const updateUser = (id, input) => {
     },
   
     getUser: ({ id }) => {
-      return users.find(user => user.id == id)
+      return users.find(user => user.id === +id)
     },
   
     // Mutation
@@ -50,9 +51,8 @@ const updateUser = (id, input) => {
     },
   
     updateUser: ({ id, input }) => {
-      users = updateUser(id, input)
-      return users;
+      return updateUser(id, input)
     }
   }
   
-  module.exports = resolvers;
+module.exports = resolvers;
