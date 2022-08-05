@@ -3,6 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client'
 import { GET_ALL_USERS, GET_USER } from './query/users';
 import { CREATE_USER, DELETE_USER } from './mutation/mutation'
+import Form from './components/Form';
+
+
+
 
 function App() {
   const { data, loading, error, refetch } = useQuery(GET_ALL_USERS)
@@ -15,8 +19,6 @@ function App() {
   const [newUser] = useMutation(CREATE_USER)
   const [newAllUsers] = useMutation(DELETE_USER)
   const [users, setUsers] = useState([])
-  const [username, setUserName] = useState('')
-  const [age, setUserAge] = useState(0)
 
   //delete users
   const [idForDelete, setIdForDelete] = useState(0)
@@ -46,29 +48,19 @@ function App() {
   }
 
   // add user
-  const createUser = (e) => {
-    e.preventDefault()
-
+  const createUser = (age, username) => {
     newUser({
       variables: {
         input: {
           age, username
         }
       }
-    }).then(({ data }) => {
-      setUserName('')
-      setUserAge(0)
     })
   }
 
   // get all users
-  const getUsers = (e) => {
-    e.preventDefault()
+  const getUsers = () => {
     refetch();
-  }
-
-  const onSubmitForm = (e) => {
-    e.preventDefault()
   }
 
   const handleChange = (e) => {
@@ -84,6 +76,8 @@ function App() {
     setId(userId)
     setUserId(0)
   }
+
+
   const onSubmitForm3 = (e) => {
     e.preventDefault()
 
@@ -91,14 +85,10 @@ function App() {
 
   return (
     <div className="App">
-      <form onSubmit={onSubmitForm}>
-        <input type='text' value={username} onChange={(e) => setUserName(e.target.value)} placeholder='username' />
-        <input type='number' value={age} onChange={(e) => setUserAge(e.target.valueAsNumber)} placeholder='age' />
-        <div className='buttons'>
-          <button onClick={(e) => createUser(e)}>создать</button>
-          <button onClick={(e) => getUsers(e)}>получить</button>
-        </div>
-      </form>
+      <Form 
+        createUser={createUser}
+        getUsers={getUsers}
+      />
 
       {/* users */}
       <div className='users'>
