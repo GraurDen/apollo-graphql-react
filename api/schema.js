@@ -37,6 +37,6 @@ const schema = buildSchema(`
     deleteUser(id: ID): [User]
     updateUser(id: ID, input: UserInput): User
   }
-`)
+`);
 
 module.exports = schema;
