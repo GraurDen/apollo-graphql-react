@@ -1,0 +1,15 @@
+{
+  "endOfLine": "lf",
+  "prettier.enable": true,
+  "prettier.insertPragma": false,
+  "singleQuote": false,
+  "prettier.tabWidth": 2,
+  "prettier.embeddedLanguageFormatting": "auto",
+  "prettier.jsxBracketSameLine": false,
+  "prettier.jsxSingleQuote": false,
+  "prettier.printWidth": 100,
+  "semi": true,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "editor.tabSize": 2
+}
