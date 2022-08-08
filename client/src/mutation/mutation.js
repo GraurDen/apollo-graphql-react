@@ -17,9 +17,11 @@ export const DELETE_USER = gql`
 `
 
 export const UPDATE_USER = gql`
-  mutation updateUser($username: String, $id: ID){
-    updateUser(username: $username, id: $id){
-      id, username, age 
+  mutation updateUser($id: ID, $input: UserInput) {
+    updateUser(id: $id, input: $input) {
+      id
+      username
+      age
     }
   }
-`
+`;

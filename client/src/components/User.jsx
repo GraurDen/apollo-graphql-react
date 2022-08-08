@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { GET_USER } from '../query/users';
-import { UPDATE_USER } from '../mutation/mutation'
-import { useQuery, useMutation } from '@apollo/client'
-
+import { useQuery } from "@apollo/client";
 
 const User = ({ users, updateUser, onSetUserId, id }) => {
-  //const [id, setUserId] = useState(0);
   const [newUserData, setNewUserData] = useState();
   const [editMode, setEditMode] = useState(false);
-  //const [updatedUserData] = useMutation(UPDATE_USER);
   const [editedUserName, setEditedUserName] = useState();
   const [editedAge, setEditedAge] = useState();
 
@@ -17,24 +13,13 @@ const User = ({ users, updateUser, onSetUserId, id }) => {
   };
 
   const onChangeAge = (e) => {
-    setEditedAge(e.currentTarget.value);
+    const editedAgeToNumber = Number(e.currentTarget.value);
+    setEditedAge(editedAgeToNumber);
   };
 
   const user = useQuery(GET_USER, {
     variables: { id },
   });
-
-  // const editedUser = (id, username, age) => {
-  //   updatedUserData({
-  //     variables: {
-  //       id,
-  //       input: {
-  //         username,
-  //         age,
-  //       },
-  //     },
-  //   });
-  // };
 
   const onSubmitForm2 = (e) => {
     e.preventDefault();
@@ -58,11 +43,6 @@ const User = ({ users, updateUser, onSetUserId, id }) => {
   };
 
   const onSubmitForm = (e) => {
-    console.log(
-      "%cUser.jsx line:61 `${}, ${}, ${}, `",
-      "color: white; background-color: #007acc;",
-      `${id}, ${editedUserName}, ${editedAge}, `,
-    );
     updateUser(id, editedUserName, editedAge);
     setEditMode(false);
   };
@@ -104,13 +84,13 @@ const User = ({ users, updateUser, onSetUserId, id }) => {
         ) : (
           <form onSubmit={onSubmitForm}>
             <input
-              placeholder="username"
+              placeholder={newUserData?.username}
               value={editedUserName || ""}
               type="text"
               onChange={(e) => onChangeUserName(e)}
             />
             <input
-              placeholder="age"
+              placeholder={newUserData?.age}
               value={editedAge || ""}
               type="number"
               onChange={(e) => onChangeAge(e)}
@@ -121,6 +101,6 @@ const User = ({ users, updateUser, onSetUserId, id }) => {
       </div>
     </div>
   );
-};;;;;
+};
 
 export default User;

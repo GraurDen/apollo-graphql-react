@@ -45,12 +45,11 @@ function App() {
           username,
         },
       },
-    }).then((result) => console.log("createUser", result));
+    });
   };
 
   // update user
   const updateUser = (id, username, age) => {
-    console.log("editUser", editUser);
     editUser({
       variables: {
         id,
@@ -59,7 +58,7 @@ function App() {
           age,
         },
       },
-    }).then((result) => console.log("editUser", result));
+    });
   };
 
   // get all users
