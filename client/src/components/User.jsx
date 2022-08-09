@@ -3,10 +3,17 @@ import { GET_USER } from '../query/users';
 import { useQuery } from "@apollo/client";
 
 const User = ({ users, updateUser, onSetUserId, id }) => {
-  const [newUserData, setNewUserData] = useState();
   const [editMode, setEditMode] = useState(false);
   const [editedUserName, setEditedUserName] = useState();
   const [editedAge, setEditedAge] = useState();
+
+  const user = useQuery(GET_USER, {
+    variables: { id },
+  });
+
+  const userData = user?.data?.getUser;
+
+  const [newUserData, setNewUserData] = useState(userData);
 
   const onChangeUserName = (e) => {
     setEditedUserName(e.currentTarget.value);
@@ -15,17 +22,6 @@ const User = ({ users, updateUser, onSetUserId, id }) => {
   const onChangeAge = (e) => {
     const editedAgeToNumber = Number(e.currentTarget.value);
     setEditedAge(editedAgeToNumber);
-  };
-
-  const user = useQuery(GET_USER, {
-    variables: { id },
-  });
-
-  const onSubmitForm2 = (e) => {
-    e.preventDefault();
-    setNewUserData(user?.data?.getUser);
-    //setUserId(0);
-    setEditMode(false);
   };
 
   const handleChange = (e) => {
@@ -38,12 +34,36 @@ const User = ({ users, updateUser, onSetUserId, id }) => {
     }
   }, [users]);
 
-  const toggleEdit = () => {
-    setEditMode(true);
+  console.log(
+    "%cUser.jsx line:40 newUserData",
+    "color: white; background-color: #007acc;",
+    newUserData,
+  );
+
+  // get user data
+  const onSubmitForm2 = (e) => {
+    e.preventDefault();
+    setNewUserData(user?.data?.getUser);
+    if (newUserData) {
+      console.log("get user dat");
+    }
+    setEditMode(false);
   };
 
+  // edit
+  const toggleEdit = () => {
+    setEditMode(true);
+    setEditedUserName(newUserData?.username);
+    setEditedAge(newUserData?.age);
+  };
+
+  // save
   const onSubmitForm = (e) => {
+    e.preventDefault();
     updateUser(id, editedUserName, editedAge);
+    if (newUserData) {
+      console.log("hello");
+    }
     setEditMode(false);
   };
 
@@ -67,7 +87,7 @@ const User = ({ users, updateUser, onSetUserId, id }) => {
             <tbody>
               <tr>
                 <td>
-                  id: <b>{newUserData?.id}</b>
+                  id: <b>{newUserData?.id || "hello"}</b>
                 </td>
                 <td>
                   name: <b>{newUserData?.username}</b>
@@ -101,6 +121,6 @@ const User = ({ users, updateUser, onSetUserId, id }) => {
       </div>
     </div>
   );
-};
+};;;;;;;;;;;;
 
 export default User;

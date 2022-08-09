@@ -24,7 +24,6 @@ const updateUser = (id, input) => {
       return user;
     }
   });
-  console.log(user);
   return user;
 };
 
@@ -52,7 +51,6 @@ const resolvers = {
 
   updateUser: ({ id, input }) => {
     const updatedUserData = updateUser(id, input);
-    console.log("input", input);
     return updatedUserData;
   },
 };
